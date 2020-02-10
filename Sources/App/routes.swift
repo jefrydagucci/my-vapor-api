@@ -20,6 +20,15 @@ func routes(_ app: Application) throws {
     app.get("hello", "ovo") { req in
         return "Hello, OVO!"
     }
+    /*
+    GET {{host}}/hello/:name
+    */
+    app.get("hello", ":name") { req -> String in
+        guard let name = req.parameters.get("name", as: String.self) else {
+            throw Abort(.badRequest)
+        }
+        return "Hello \(name)"
+    }
 
     let todoController = TodoController()
     app.get("todos", use: todoController.index)
