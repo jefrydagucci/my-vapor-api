@@ -17,6 +17,7 @@ struct UserController: RouteCollection {
         userRoutes.post(use: create)
         userRoutes.get(use: getAll)
         userRoutes.get(":userID", use: getHandler)
+        userRoutes.delete(":userID", use: deleteHandler)
     }
     
     /*
@@ -58,6 +59,15 @@ struct UserController: RouteCollection {
     func getHandler(req: Request) throws -> EventLoopFuture<User> {
         return User.find(req.parameters.get("userID"), on: req.db)
             .unwrap(or: Abort(.notFound))
+    }
+    
+    /*
+     DELETE http://localhost:8080/api/users/1
+     */
+    func deleteHandler(req: Request) throws -> EventLoopFuture<HTTPStatus> {
+        return try getHandler(req: req)
+            .flatMap { $0.delete(on: req.db) }
+            .map { .ok }
     }
 }
 
