@@ -18,6 +18,7 @@ struct UserController: RouteCollection {
         userRoutes.get(use: getAll)
         userRoutes.get(":userID", use: getHandler)
         userRoutes.delete(":userID", use: deleteHandler)
+        userRoutes.put(":userID", use: updateHandler)
     }
     
     /*
@@ -68,6 +69,23 @@ struct UserController: RouteCollection {
         return try getHandler(req: req)
             .flatMap { $0.delete(on: req.db) }
             .map { .ok }
+    }
+    
+    /*
+     PUT {{host}}/api/users/1
+     {
+     "name" : "Jefry",
+     "username": "jefrydagucci"
+     }
+     */
+    func updateHandler(req: Request) throws -> EventLoopFuture<User> {
+        let updatedUser = try req.content.decode(User.self)
+        return try getHandler(req: req)
+            .flatMap { user in
+                user.name = updatedUser.name
+                user.username = updatedUser.name
+                return user.save(on: req.db).map { user }
+        }
     }
 }
 
