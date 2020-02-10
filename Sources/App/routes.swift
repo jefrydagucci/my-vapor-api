@@ -29,6 +29,19 @@ func routes(_ app: Application) throws {
         }
         return "Hello \(name)"
     }
+    /*
+    Accept and return JSON
+    POST {{host}}/user-info/
+    {
+       "name" : "Jefry",
+       "age": 17
+    }
+    */
+    app.post("user-info") { (req) -> UserMessage in
+        let user = try req.content.decode(UserInfo.self)
+        let message = "Hello \(user.name), you are \(user.age)"
+        return UserMessage(message: message)
+    }
 
     let todoController = TodoController()
     app.get("todos", use: todoController.index)
