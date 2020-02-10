@@ -38,7 +38,8 @@ struct UserController: RouteCollection {
      [
      {
      "name" : "Jefry",
-     "username": "jefrydagucci"
+     "username": "jefrydagucci",
+     "reminders": []
      },
      {
      "name" : "Jefry2",
@@ -47,7 +48,10 @@ struct UserController: RouteCollection {
      ]
      */
     func getAll(req: Request) throws -> EventLoopFuture<[User]> {
-        return User.query(on: req.db).all()
+        let dd = User.query(on: req.db)
+        return User.query(on: req.db)
+            .with(\.$reminders)
+            .all()
     }
     
     /*

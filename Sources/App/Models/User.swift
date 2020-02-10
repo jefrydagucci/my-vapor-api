@@ -21,6 +21,9 @@ final class User: Model, Content {
     
     @Field(key: "username")
     var username: String
+    
+    @Children(for: \.$user)
+    var reminders: [Reminder]
 
     init() { }
 

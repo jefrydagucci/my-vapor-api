@@ -49,4 +49,5 @@ func routes(_ app: Application) throws {
     app.on(.DELETE, "todos", ":todoID", use: todoController.delete)
     
     try app.register(collection: UserController())
+    try app.register(collection: ReminderController())
 }

@@ -14,6 +14,7 @@ public func configure(_ app: Application) throws {
     // Configure migrations
     app.migrations.add(CreateTodo())
     app.migrations.add(CreateUser())
+    app.migrations.add(CreateReminder())
     
     try app.autoMigrate().wait()
     try routes(app)
