@@ -9,9 +9,12 @@ public func configure(_ app: Application) throws {
 
     // Configure SQLite database
     app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
+//    app.databases.use(.sqlite(.memory), as: .sqlite)
 
     // Configure migrations
     app.migrations.add(CreateTodo())
+    app.migrations.add(CreateUser())
     
+    try app.autoMigrate().wait()
     try routes(app)
 }
